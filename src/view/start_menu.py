@@ -1,7 +1,9 @@
 #!/usr/bin/env python3
 
 import sys
-from PyQt5.QtWidgets import QApplication, QMainWindow, QPushButton, QVBoxLayout, QWidget
+import resources_rc
+from PyQt5.QtWidgets import QApplication, QMainWindow, QPushButton, QVBoxLayout, QWidget, QLabel
+from PyQt5.QtGui import QPixmap, QPalette, QBrush
 from PyQt5.uic import loadUi
 
 class ColorPaletteGenerator(QMainWindow):
@@ -9,6 +11,16 @@ class ColorPaletteGenerator(QMainWindow):
         super().__init__()
         loadUi("Start_menu.ui", self)
         
+        self.background_label = QLabel(self)
+        self.background_label.setPixmap(QPixmap(":/Project_image_assets/Background.jpg"))
+        self.background_label.setScaledContents(True)
+        self.setCentralWidget(self.background_label)
+
+    def resizeEvent(self, event):
+        super().resizeEvent(event)
+        # Resize the background image to cover the entire window
+        self.background_label.resize(self.size())
+
 
 
 if __name__ == '__main__':
