@@ -11,10 +11,12 @@ class ColorPaletteGenerator(QMainWindow):
         super().__init__()
         loadUi("Start_menu.ui", self)
         
+
         self.background_label = QLabel(self)
         self.background_label.setPixmap(QPixmap(":/Project_image_assets/Background.jpg"))
         self.background_label.setScaledContents(True)
-        self.setCentralWidget(self.background_label)
+        self.background_label.setGeometry(self.rect())
+        self.background_label.lower() 
 
     def resizeEvent(self, event):
         super().resizeEvent(event)
