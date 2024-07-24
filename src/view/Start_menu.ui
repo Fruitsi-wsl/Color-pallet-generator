@@ -137,7 +137,7 @@ color: yellow</string>
        <number>19</number>
       </property>
       <item row="0" column="0">
-       <widget class="QPushButton" name="pushButton">
+       <widget class="QPushButton" name="random_palette_button">
         <property name="minimumSize">
          <size>
           <width>150</width>
@@ -192,7 +192,7 @@ color: blue
       <item row="2" column="0">
        <layout class="QGridLayout" name="gridLayout_4">
         <item row="0" column="0">
-         <widget class="QPushButton" name="pushButton_2">
+         <widget class="QPushButton" name="image_palette_button">
           <property name="minimumSize">
            <size>
             <width>0</width>
