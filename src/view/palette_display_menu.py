@@ -15,7 +15,7 @@ sys.path.append(os.path.join(os.path.dirname(__file__), "..", 'model'))
 
 from generate_random_palette import generate_color_palette
 
-class ColorPaletteGenerator(QMainWindow):
+class RandomPaletteDisplay(QMainWindow):
     def __init__(self):
         super().__init__()
         loadUi("Palette_display_menu.ui", self)
@@ -80,6 +80,6 @@ class ColorPaletteGenerator(QMainWindow):
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)
-    ex = ColorPaletteGenerator()
+    ex = RandomPaletteDisplay()
     ex.show()
     sys.exit(app.exec_())
