@@ -2,7 +2,7 @@
 
 import sys
 import resources_rc
-from PyQt5.QtWidgets import QApplication, QMainWindow, QPushButton, QVBoxLayout, QWidget, QLabel
+from PyQt5.QtWidgets import QApplication, QMainWindow, QPushButton, QVBoxLayout, QWidget, QLabel, QMessageBox
 from PyQt5.QtGui import QPixmap, QPalette, QBrush
 from PyQt5.uic import loadUi
 
@@ -11,6 +11,8 @@ class StartMenu(QMainWindow):
     def __init__(self):
         super().__init__()
         loadUi("Start_menu.ui", self)
+
+        self.palette_size = 0
         
 
         self.background_label = QLabel(self)
@@ -33,6 +35,28 @@ class StartMenu(QMainWindow):
         self.show_palette.setGeometry(geometry)
         self.show_palette.show()
         self.hide()
+
+    def prompt_palette_size(self):
+        # Create a message box to prompt for palette size
+        msg_box = QMessageBox(self)
+        msg_box.setWindowTitle("Select Palette Size")
+        msg_box.setText("Please select the number of colors for the palette:")
+        msg_box.setIcon(QMessageBox.Question)
+
+        # Add custom buttons for palette size options
+        button3 = msg_box.addButton("3 Colors", QMessageBox.ActionRole)
+        button6 = msg_box.addButton("6 Colors", QMessageBox.ActionRole)
+        button10 = msg_box.addButton("10 Colors", QMessageBox.ActionRole)
+
+        # Show the message box and wait for user interaction
+        msg_box.exec_()
+
+        if msg_box.clickedButton() == button3:
+            self.palette_size = 3
+        elif msg_box.clickedButton() == button6:
+            self.palette_size = 6
+        elif msg_box.clickedButton() == button10:
+            self.palette_size = 10
 
 
 
