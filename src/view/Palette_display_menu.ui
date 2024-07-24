@@ -137,7 +137,7 @@ color: yellow</string>
        <number>19</number>
       </property>
       <item row="0" column="1">
-       <widget class="QGraphicsView" name="graphicsView"/>
+       <widget class="QGraphicsView" name="palette_display"/>
       </item>
       <item row="0" column="2">
        <layout class="QGridLayout" name="gridLayout_9">

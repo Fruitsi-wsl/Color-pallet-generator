@@ -36,5 +36,4 @@ def create_palette():
 
     palette.clear()
     
-
-create_palette()
+    
