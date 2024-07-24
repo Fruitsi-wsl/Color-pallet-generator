@@ -5,7 +5,7 @@ import resources_rc
 from PyQt5.QtWidgets import QApplication, QMainWindow, QPushButton, QVBoxLayout, QWidget, QLabel
 from PyQt5.QtGui import QPixmap, QPalette, QBrush
 from PyQt5.uic import loadUi
-from palette_display_menu import RandomPaletteDisplay
+
 
 class StartMenu(QMainWindow):
     def __init__(self):
@@ -27,6 +27,7 @@ class StartMenu(QMainWindow):
         self.background_label.resize(self.size())
 
     def random_palette_button_clicked(self):
+        from palette_display_menu import RandomPaletteDisplay
         geometry = self.geometry()
         self.show_palette = RandomPaletteDisplay()
         self.show_palette.setGeometry(geometry)

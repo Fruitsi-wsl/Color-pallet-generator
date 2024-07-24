@@ -11,6 +11,7 @@ from PyQt5.QtGui import QPixmap, QPalette, QBrush, QColor
 from PyQt5.uic import loadUi
 from PyQt5.QtCore import Qt, QTimer
 
+
 sys.path.append(os.path.join(os.path.dirname(__file__), "..", 'model'))
 
 from generate_random_palette import generate_color_palette
@@ -29,6 +30,8 @@ class RandomPaletteDisplay(QMainWindow):
 
         self.palette = generate_color_palette(6)
 
+        self.GoBackButton.clicked.connect(self.push_GoBackButton)
+        self.Regenerate_Button.clicked.connect(self.push_RegenerateButton)
 
     def showEvent(self, event):
         super().showEvent(event)
@@ -73,6 +76,19 @@ class RandomPaletteDisplay(QMainWindow):
 
         self.palette_display.fitInView(scene.sceneRect(), Qt.KeepAspectRatio)
 
+
+    def push_GoBackButton(self):
+        from start_menu import StartMenu
+        
+        geometry = self.geometry()
+        self.goback = StartMenu()
+        self.goback.setGeometry(geometry)   
+        self.goback.show()
+        self.hide()
+
+    def push_RegenerateButton(self):
+        self.palette = generate_color_palette(6)
+        self.update_palette_display()
     
 
 
