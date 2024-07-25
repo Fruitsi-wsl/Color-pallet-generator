@@ -12,6 +12,7 @@ from PyQt5.uic import loadUi
 from PyQt5.QtCore import Qt, QTimer
 
 
+
 current_dir = os.path.dirname(os.path.abspath(__file__))
 
 # Construct the paths to the model and controller directories
@@ -90,7 +91,7 @@ class RandomPaletteDisplay(QMainWindow):
 
     def push_GoBackButton(self):
         from start_menu import StartMenu
-        
+        shared_variables.palette_size_selected = False
         geometry = self.geometry()
         self.goback = StartMenu()
         self.goback.setGeometry(geometry)   

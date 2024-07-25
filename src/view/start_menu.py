@@ -8,6 +8,8 @@ from PyQt5.QtGui import QPixmap, QPalette, QBrush
 from PyQt5.uic import loadUi
 import tkinter as tk
 from tkinter import filedialog
+from PIL import Image
+from sklearn.cluster import KMeans
 
 
 
@@ -39,8 +41,10 @@ class StartMenu(QMainWindow):
         self.background_label.setGeometry(self.rect())
         self.background_label.lower() 
 
-        self.random_palette_button.clicked.connect(self.prompt_palette_size)
-        self.image_palette_button.clicked.connect(self.select_image)
+        
+
+        self.random_palette_button.clicked.connect(lambda: (self.prompt_palette_size(), self.random_palette_button_clicked() ))
+        self.image_palette_button.clicked.connect(lambda: (self.prompt_palette_size(), self.select_image()))
 
     def resizeEvent(self, event):
         super().resizeEvent(event)
@@ -55,26 +59,40 @@ class StartMenu(QMainWindow):
         self.show_palette.show()
         self.hide()
 
+    def image_palette_button_clicked(self):
+        from image_palette_display_menu import ImagePaletteDisplay
+        geometry = self.geometry()
+        self.show_palette = ImagePaletteDisplay()
+        self.show_palette.setGeometry(geometry)
+        self.show_palette.show()
+        self.hide()
+
     def prompt_palette_size(self):
         dialog = PaletteSizeDialog(self)
         dialog.exec_()
-        if dialog.palette_size_selected:
-            self.random_palette_button_clicked()
 
     def select_image(self):
+
+        if shared_variables.palette_size_selected:
+              
     # Create a Tkinter root window (it won't be shown)
-        root = tk.Tk()
-        root.withdraw()  # Hide the root window
+            root = tk.Tk()
+            root.withdraw()  # Hide the root window
 
     # Open a file dialog and let the user select a file
-        file_path = filedialog.askopenfilename(
-        title="Select an Image",
-        filetypes=[("Image Files", "*.jpg *.jpeg *.png *.gif")]
-    )
+            file_path = filedialog.askopenfilename(
+            title="Select an Image",
+            filetypes=[("Image Files", "*.jpg *.jpeg *.png *.gif")]
+            )
 
-    # Print the selected file path (or do something with it)
-        print("Selected file:", file_path)
-        return file_path
+            shared_variables.image_path = file_path
+            self.image_palette_button_clicked()
+        
+
+
+    
+
+    
 
 class PaletteSizeDialog(QDialog):
     def __init__(self, parent=None):
@@ -96,7 +114,6 @@ class PaletteSizeDialog(QDialog):
 
         self.setLayout(layout)
 
-        self.palette_size_selected = False
 
         self.button3.clicked.connect(self.set_palette_size_3)
         self.button6.clicked.connect(self.set_palette_size_6)
@@ -104,17 +121,17 @@ class PaletteSizeDialog(QDialog):
 
     def set_palette_size_3(self):
         shared_variables.palette_size = 3
-        self.palette_size_selected = True
+        shared_variables.palette_size_selected = True
         self.accept()
 
     def set_palette_size_6(self):
         shared_variables.palette_size = 6
-        self.palette_size_selected = True
+        shared_variables.palette_size_selected = True
         self.accept()
 
     def set_palette_size_10(self):
         shared_variables.palette_size = 10
-        self.palette_size_selected = True
+        shared_variables.palette_size_selected = True
         self.accept()
 
 
