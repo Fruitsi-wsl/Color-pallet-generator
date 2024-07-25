@@ -6,6 +6,8 @@ import resources_rc
 from PyQt5.QtWidgets import QApplication, QMainWindow, QPushButton, QVBoxLayout, QWidget, QLabel, QMessageBox, QDialog
 from PyQt5.QtGui import QPixmap, QPalette, QBrush
 from PyQt5.uic import loadUi
+import tkinter as tk
+from tkinter import filedialog
 
 
 
@@ -38,6 +40,7 @@ class StartMenu(QMainWindow):
         self.background_label.lower() 
 
         self.random_palette_button.clicked.connect(self.prompt_palette_size)
+        self.image_palette_button.clicked.connect(self.select_image)
 
     def resizeEvent(self, event):
         super().resizeEvent(event)
@@ -57,6 +60,21 @@ class StartMenu(QMainWindow):
         dialog.exec_()
         if dialog.palette_size_selected:
             self.random_palette_button_clicked()
+
+    def select_image(self):
+    # Create a Tkinter root window (it won't be shown)
+        root = tk.Tk()
+        root.withdraw()  # Hide the root window
+
+    # Open a file dialog and let the user select a file
+        file_path = filedialog.askopenfilename(
+        title="Select an Image",
+        filetypes=[("Image Files", "*.jpg *.jpeg *.png *.gif")]
+    )
+
+    # Print the selected file path (or do something with it)
+        print("Selected file:", file_path)
+        return file_path
 
 class PaletteSizeDialog(QDialog):
     def __init__(self, parent=None):
