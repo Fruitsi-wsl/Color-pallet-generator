@@ -182,6 +182,10 @@ color: yellow</string>
             <height>16777215</height>
            </size>
           </property>
+          <property name="styleSheet">
+           <string notr="true">background: pink;
+color: blue</string>
+          </property>
           <property name="text">
            <string>Back</string>
           </property>
@@ -200,6 +204,10 @@ color: yellow</string>
             <width>200</width>
             <height>200</height>
            </size>
+          </property>
+          <property name="styleSheet">
+           <string notr="true">background: pink;
+color: blue</string>
           </property>
           <property name="text">
            <string>Regenerate</string>
