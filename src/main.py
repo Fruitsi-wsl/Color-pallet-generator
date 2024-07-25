@@ -1,32 +1,29 @@
 #!/usr/bin/env python3
 
-from PyQt5.QtWidgets import QApplication, QMainWindow, QLabel, QVBoxLayout, QWidget
-from view.start_menu import StartMenu
-from view import resources_rc
-import os
 import sys
+import os
+from PyQt5.QtWidgets import QApplication
+from view.start_menu import StartMenu
+from view.palette_display_menu import RandomPaletteDisplay
+from view.image_palette_display_menu import ImagePaletteDisplay
+from controller import shared_variables
 
-
+# Correctly set the path to the parent directory of 'src'
 current_dir = os.path.dirname(os.path.abspath(__file__))
+project_root = os.path.abspath(os.path.join(current_dir, ".."))
+sys.path.append(project_root)  # Add the project root to sys.path
 
-# Construct the paths to the model and controller directories
-model_dir = os.path.join(current_dir, 'model')
-view_dir = os.path.join(current_dir, "view")
-controller_dir = os.path.join(current_dir, "controller")
-sys.path.append(model_dir)
-sys.path.append(controller_dir)
-sys.path.append(view_dir)
+# For additional clarity, add the following paths explicitly (if needed)
+sys.path.append(os.path.join(project_root, 'src'))
+sys.path.append(os.path.join(project_root, 'src', 'model'))
+sys.path.append(os.path.join(project_root, 'src', 'controller'))
+sys.path.append(os.path.join(project_root, 'src', 'view'))
 
-class MainWindow(QMainWindow):
-    def __init__(self):
-        super().__init__()
-        self.show_main_window = StartMenu()
-        self.show_main_window.show()
-        self.hide()
-
+def main():
+    app = QApplication(sys.argv)
+    window = StartMenu()
+    window.show()
+    sys.exit(app.exec_())
 
 if __name__ == "__main__":
-    app = QApplication([])
-    window = MainWindow()
-    window.hide()
-    app.exec_()
+    main()

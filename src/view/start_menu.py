@@ -9,7 +9,7 @@ from PyQt5.uic import loadUi
 import tkinter as tk
 from tkinter import filedialog
 from PIL import Image
-from sklearn.cluster import KMeans
+
 
 
 
@@ -54,7 +54,7 @@ class StartMenu(QMainWindow):
         self.background_label.resize(self.size())
 
     def random_palette_button_clicked(self):
-        from palette_display_menu import RandomPaletteDisplay
+        from view.palette_display_menu import RandomPaletteDisplay
         geometry = self.geometry()
         self.show_palette = RandomPaletteDisplay()
         self.show_palette.setGeometry(geometry)
@@ -62,7 +62,7 @@ class StartMenu(QMainWindow):
         self.hide()
 
     def image_palette_button_clicked(self):
-        from image_palette_display_menu import ImagePaletteDisplay
+        from view.image_palette_display_menu import ImagePaletteDisplay
         geometry = self.geometry()
         self.show_palette = ImagePaletteDisplay()
         self.show_palette.setGeometry(geometry)
