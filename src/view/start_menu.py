@@ -21,6 +21,8 @@ controller_dir = os.path.join(current_dir, "..", "controller")
 sys.path.append(model_dir)
 sys.path.append(controller_dir)
 
+ui_path = os.path.join(current_dir, "Start_menu.ui")
+
 import shared_variables
 
 
@@ -32,7 +34,7 @@ sys.path.append(controller_dir)
 class StartMenu(QMainWindow):
     def __init__(self):
         super().__init__()
-        loadUi("Start_menu.ui", self)
+        loadUi(ui_path, self)
 
         
         self.background_label = QLabel(self)

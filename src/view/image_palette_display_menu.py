@@ -29,6 +29,8 @@ controller_dir = os.path.join(current_dir, "..", "controller")
 sys.path.append(model_dir)
 sys.path.append(controller_dir)
 
+ui_path = os.path.join(current_dir, "Image_palette_display.ui")
+
 import shared_variables
 
 from generate_random_palette import generate_color_palette
@@ -38,7 +40,7 @@ from generate_random_palette import generate_color_palette
 class ImagePaletteDisplay(QMainWindow):
     def __init__(self):
         super().__init__()
-        loadUi("Image_palette_display.ui", self)
+        loadUi(ui_path, self)
 
     
         self.background_label = QLabel(self)
