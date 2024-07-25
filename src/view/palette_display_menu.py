@@ -12,23 +12,34 @@ from PyQt5.uic import loadUi
 from PyQt5.QtCore import Qt, QTimer
 
 
-sys.path.append(os.path.join(os.path.dirname(__file__), "..", 'model'))
+current_dir = os.path.dirname(os.path.abspath(__file__))
+
+# Construct the paths to the model and controller directories
+model_dir = os.path.join(current_dir, "..", 'model')
+controller_dir = os.path.join(current_dir, "..", "controller")
+
+# Add the directories to sys.path
+sys.path.append(model_dir)
+sys.path.append(controller_dir)
+
+import shared_variables
 
 from generate_random_palette import generate_color_palette
+
+
 
 class RandomPaletteDisplay(QMainWindow):
     def __init__(self):
         super().__init__()
         loadUi("Palette_display_menu.ui", self)
-        
-
+    
         self.background_label = QLabel(self)
         self.background_label.setPixmap(QPixmap(":/Project_image_assets/Background.jpg"))
         self.background_label.setScaledContents(True)
         self.background_label.setGeometry(self.rect())
         self.background_label.lower() 
 
-        self.palette = generate_color_palette(6)
+        self.palette = generate_color_palette(shared_variables.palette_size)
 
         self.GoBackButton.clicked.connect(self.push_GoBackButton)
         self.Regenerate_Button.clicked.connect(self.push_RegenerateButton)
@@ -87,7 +98,7 @@ class RandomPaletteDisplay(QMainWindow):
         self.hide()
 
     def push_RegenerateButton(self):
-        self.palette = generate_color_palette(6)
+        self.palette = generate_color_palette(shared_variables.palette_size)
         self.update_palette_display()
     
 
