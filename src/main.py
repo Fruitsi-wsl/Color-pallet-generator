@@ -3,27 +3,25 @@
 import sys
 import os
 from PyQt5.QtWidgets import QApplication
-from view.start_menu import StartMenu
-from view.palette_display_menu import RandomPaletteDisplay
-from view.image_palette_display_menu import ImagePaletteDisplay
-from controller import shared_variables
 
-# Correctly set the path to the parent directory of 'src'
+# Set up the path to include 'src' and its subdirectories
 current_dir = os.path.dirname(os.path.abspath(__file__))
-project_root = os.path.abspath(os.path.join(current_dir, ".."))
-sys.path.append(project_root)  # Add the project root to sys.path
+src_dir = current_dir  # Assuming 'main.py' is in the 'src' directory
+model_dir = os.path.join(src_dir, 'model')
+controller_dir = os.path.join(src_dir, 'controller')
+view_dir = os.path.join(src_dir, 'view')
 
-# For additional clarity, add the following paths explicitly (if needed)
-sys.path.append(os.path.join(project_root, 'src'))
-sys.path.append(os.path.join(project_root, 'src', 'model'))
-sys.path.append(os.path.join(project_root, 'src', 'controller'))
-sys.path.append(os.path.join(project_root, 'src', 'view'))
+# Add directories to sys.path
+sys.path.append(src_dir)
+sys.path.append(model_dir)
+sys.path.append(controller_dir)
+sys.path.append(view_dir)
 
-def main():
-    app = QApplication(sys.argv)
-    window = StartMenu()
-    window.show()
-    sys.exit(app.exec_())
+from controller.app_controller import AppController
+import shared_variables  # Make sure this import works
 
 if __name__ == "__main__":
-    main()
+    app = QApplication(sys.argv)
+    controller = AppController()
+    controller.run()  # Ensure that the 'run' method exists in 'AppController'
+    sys.exit(app.exec_())
