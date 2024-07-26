@@ -6,8 +6,8 @@
 import os
 import sys
 import resources_rc
-from PyQt5.QtWidgets import QApplication, QMainWindow, QPushButton, QVBoxLayout, QWidget, QLabel, QGraphicsScene, QGraphicsRectItem
-from PyQt5.QtGui import QPixmap, QPalette, QBrush, QColor
+from PyQt5.QtWidgets import QApplication, QMainWindow,QLabel, QGraphicsScene, QGraphicsRectItem
+from PyQt5.QtGui import QPixmap, QBrush, QColor
 from PyQt5.uic import loadUi
 from PyQt5.QtCore import Qt, QTimer
 
@@ -18,7 +18,7 @@ current_dir = os.path.dirname(os.path.abspath(__file__))
 ui_path = os.path.join(current_dir, "Palette_display_menu.ui")
 
 
-import shared_variables
+import shared_variables as shared_variables
 
 from model.generate_random_palette import generate_color_palette
 
