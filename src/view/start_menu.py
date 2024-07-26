@@ -3,40 +3,29 @@
 import sys
 import os
 import resources_rc
-from PyQt5.QtWidgets import QApplication, QMainWindow, QPushButton, QVBoxLayout, QWidget, QLabel, QMessageBox, QDialog
+from PyQt5.QtWidgets import QApplication, QMainWindow, QPushButton, QVBoxLayout, QWidget, QLabel, QMessageBox, QDialog, QFileDialog
 from PyQt5.QtGui import QPixmap, QPalette, QBrush
 from PyQt5.uic import loadUi
-import tkinter as tk
-from tkinter import filedialog
-from PIL import Image
+
 
 
 
 
 current_dir = os.path.dirname(os.path.abspath(__file__))
 
-# Construct the paths to the model and controller directories
-model_dir = os.path.join(current_dir, "..", 'model')
-controller_dir = os.path.join(current_dir, "..", "controller")
-sys.path.append(model_dir)
-sys.path.append(controller_dir)
-
 ui_path = os.path.join(current_dir, "Start_menu.ui")
 
 import shared_variables
+from model.generate_random_palette import generate_color_palette
 
 
-
-# Add the directories to sys.path
-sys.path.append(model_dir)
-sys.path.append(controller_dir)
 
 class StartMenu(QMainWindow):
-    def __init__(self):
+    def __init__(self, controller):
         super().__init__()
+        self.controller = controller
         loadUi(ui_path, self)
 
-        
         self.background_label = QLabel(self)
         self.background_label.setPixmap(QPixmap(":/Project_image_assets/Background.jpg"))
         self.background_label.setScaledContents(True)
@@ -45,7 +34,7 @@ class StartMenu(QMainWindow):
 
         
 
-        self.random_palette_button.clicked.connect(lambda: (self.prompt_palette_size(), self.random_palette_button_clicked() ))
+        self.random_palette_button.clicked.connect(lambda: (self.prompt_palette_size(), self.random_palette_button_clicked(), self.set_palette_size() ))
         self.image_palette_button.clicked.connect(lambda: (self.prompt_palette_size(), self.select_image()))
 
     def resizeEvent(self, event):
@@ -54,20 +43,16 @@ class StartMenu(QMainWindow):
         self.background_label.resize(self.size())
 
     def random_palette_button_clicked(self):
-        from view.palette_display_menu import RandomPaletteDisplay
-        geometry = self.geometry()
-        self.show_palette = RandomPaletteDisplay()
-        self.show_palette.setGeometry(geometry)
-        self.show_palette.show()
-        self.hide()
+        self.controller.store_geometry(self)
+        self.controller.show_random_palette_display()
 
     def image_palette_button_clicked(self):
-        from view.image_palette_display_menu import ImagePaletteDisplay
-        geometry = self.geometry()
-        self.show_palette = ImagePaletteDisplay()
-        self.show_palette.setGeometry(geometry)
-        self.show_palette.show()
-        self.hide()
+        self.controller.store_geometry(self)
+        self.controller.show_image_palette_display()
+
+    def set_palette_size(self):
+        self.palette = generate_color_palette(shared_variables.palette_size)
+        
 
     def prompt_palette_size(self):
         dialog = PaletteSizeDialog(self)
@@ -76,16 +61,15 @@ class StartMenu(QMainWindow):
     def select_image(self):
 
         if shared_variables.palette_size_selected:
-              
-    # Create a Tkinter root window (it won't be shown)
-            root = tk.Tk()
-            root.withdraw()  # Hide the root window
-
-    # Open a file dialog and let the user select a file
-            file_path = filedialog.askopenfilename(
-            title="Select an Image",
-            filetypes=[("Image Files", "*.jpg *.jpeg *.png *.gif")]
-            )
+        # Create a QFileDialog to let the user select an image file
+            options = QFileDialog.Options()
+            file_path, _ = QFileDialog.getOpenFileName(
+            self,
+            "Select an Image",
+            "",
+            "Image Files (*.jpg *.jpeg *.png *.gif);;All Files (*)",
+            options=options
+        )
 
             shared_variables.image_path = file_path
             self.image_palette_button_clicked()
@@ -136,6 +120,7 @@ class PaletteSizeDialog(QDialog):
         shared_variables.palette_size_selected = True
         self.accept()
 
+        
 
 
 

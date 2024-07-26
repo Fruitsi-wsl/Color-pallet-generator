@@ -6,38 +6,29 @@
 import os
 import sys
 import resources_rc
-from PyQt5.QtWidgets import QApplication, QMainWindow, QPushButton, QVBoxLayout, QWidget, QLabel, QGraphicsScene, QGraphicsRectItem
+from PyQt5.QtWidgets import QApplication, QMainWindow, QPushButton, QVBoxLayout, QWidget, QLabel, QGraphicsScene, QGraphicsRectItem, QFileDialog
 from PyQt5.QtGui import QPixmap, QPalette, QBrush, QColor
 from PyQt5.uic import loadUi
 from PyQt5.QtCore import Qt, QTimer
 from PIL import Image
 from sklearn.cluster import KMeans
 import numpy as np
-import matplotlib.pyplot as plt
-import tkinter as tk
-from tkinter import filedialog
-from PIL import Image
 
 
 current_dir = os.path.dirname(os.path.abspath(__file__))
-
-# Construct the paths to the model and controller directories
-model_dir = os.path.join(current_dir, "..", 'model')
-controller_dir = os.path.join(current_dir, "..", "controller")
-sys.path.append(model_dir)
-sys.path.append(controller_dir)
 
 ui_path = os.path.join(current_dir, "Image_palette_display.ui")
 
 import shared_variables
 
-from generate_random_palette import generate_color_palette
+from model.generate_random_palette import generate_color_palette
 
 
 
 class ImagePaletteDisplay(QMainWindow):
-    def __init__(self):
+    def __init__(self, controller):
         super().__init__()
+        self.controller = controller
         loadUi(ui_path, self)
 
     
@@ -47,7 +38,7 @@ class ImagePaletteDisplay(QMainWindow):
         self.background_label.setGeometry(self.rect())
         self.background_label.lower() 
 
-        self.palette = self.generate_palette_from_image(shared_variables.image_path, shared_variables.palette_size)
+        
 
         self.GoBackButton.clicked.connect(self.push_GoBackButton)
         self.ReselectButton.clicked.connect(self.select_image)
@@ -70,7 +61,7 @@ class ImagePaletteDisplay(QMainWindow):
 
 
     def update_palette_display(self):   
-
+        self.palette = self.generate_palette_from_image(shared_variables.image_path, shared_variables.palette_size)
     # Create a new QGraphicsScene
         scene = QGraphicsScene()
 
@@ -96,13 +87,8 @@ class ImagePaletteDisplay(QMainWindow):
 
 
     def push_GoBackButton(self):
-        from view.start_menu import StartMenu
         shared_variables.palette_size_selected = False
-        geometry = self.geometry()
-        self.goback = StartMenu()
-        self.goback.setGeometry(geometry)   
-        self.goback.show()
-        self.hide()
+        self.controller.show_start_menu()
 
     def push_ReselectButton(self):
         self.palette = self.generate_palette_from_image(shared_variables.image_path, shared_variables.palette_size)
@@ -127,19 +113,17 @@ class ImagePaletteDisplay(QMainWindow):
     def select_image(self):
 
         if shared_variables.palette_size_selected:
-              
-    # Create a Tkinter root window (it won't be shown)
-            root = tk.Tk()
-            root.withdraw()  # Hide the root window
+        # Create a QFileDialog to let the user select an image file
+            options = QFileDialog.Options()
+            file_path, _ = QFileDialog.getOpenFileName(
+            self,
+            "Select an Image",
+            "",
+            "Image Files (*.jpg *.jpeg *.png *.gif);;All Files (*)",
+            options=options
+        )
 
-    # Open a file dialog and let the user select a file
-            file_path = filedialog.askopenfilename(
-            title="Select an Image",
-            filetypes=[("Image Files", "*.jpg *.jpeg *.png *.gif")]
-            )
-
-            shared_variables.image_path = file_path
-            
+            image_path = file_path
             self.push_ReselectButton()
 
 

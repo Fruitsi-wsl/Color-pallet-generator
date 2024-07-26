@@ -15,33 +15,28 @@ from PyQt5.QtCore import Qt, QTimer
 
 current_dir = os.path.dirname(os.path.abspath(__file__))
 
-model_dir = os.path.join(current_dir, "..", 'model')
-controller_dir = os.path.join(current_dir, "..", "controller")
-sys.path.append(model_dir)
-sys.path.append(controller_dir)
-
-
 ui_path = os.path.join(current_dir, "Palette_display_menu.ui")
 
 
 import shared_variables
 
-from generate_random_palette import generate_color_palette
+from model.generate_random_palette import generate_color_palette
 
 
 
 class RandomPaletteDisplay(QMainWindow):
-    def __init__(self):
+    def __init__(self, controller):
         super().__init__()
+        self.controller = controller
         loadUi(ui_path, self)
     
         self.background_label = QLabel(self)
         self.background_label.setPixmap(QPixmap(":/Project_image_assets/Background.jpg"))
         self.background_label.setScaledContents(True)
         self.background_label.setGeometry(self.rect())
-        self.background_label.lower() 
+        self.background_label.lower()       
 
-        self.palette = generate_color_palette(shared_variables.palette_size)
+        self.palette = []
 
         self.GoBackButton.clicked.connect(self.push_GoBackButton)
         self.Regenerate_Button.clicked.connect(self.push_RegenerateButton)
@@ -66,6 +61,7 @@ class RandomPaletteDisplay(QMainWindow):
     def update_palette_display(self):   
         if not self.palette_display:
             return
+        self.palette = generate_color_palette(shared_variables.palette_size)
 
         # Create a new QGraphicsScene
         scene = QGraphicsScene()
@@ -91,13 +87,9 @@ class RandomPaletteDisplay(QMainWindow):
 
 
     def push_GoBackButton(self):
-        from view.start_menu import StartMenu
+
         shared_variables.palette_size_selected = False
-        geometry = self.geometry()
-        self.goback = StartMenu()
-        self.goback.setGeometry(geometry)   
-        self.goback.show()
-        self.hide()
+        self.controller.show_start_menu()
 
     def push_RegenerateButton(self):
         self.palette = generate_color_palette(shared_variables.palette_size)
