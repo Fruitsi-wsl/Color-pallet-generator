@@ -43,11 +43,9 @@ class StartMenu(QMainWindow):
         self.background_label.resize(self.size())
 
     def random_palette_button_clicked(self):
-        self.controller.store_geometry(self)
         self.controller.show_random_palette_display()
 
     def image_palette_button_clicked(self):
-        self.controller.store_geometry(self)
         self.controller.show_image_palette_display()
 
     def set_palette_size(self):
