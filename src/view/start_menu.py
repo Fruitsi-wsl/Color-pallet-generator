@@ -3,8 +3,8 @@
 import sys
 import os
 import resources_rc
-from PyQt5.QtWidgets import QApplication, QMainWindow, QPushButton, QVBoxLayout, QWidget, QLabel, QMessageBox, QDialog, QFileDialog
-from PyQt5.QtGui import QPixmap, QPalette, QBrush
+from PyQt5.QtWidgets import QApplication, QMainWindow, QPushButton, QVBoxLayout, QLabel, QDialog, QFileDialog
+from PyQt5.QtGui import QPixmap
 from PyQt5.uic import loadUi
 
 
@@ -15,7 +15,7 @@ current_dir = os.path.dirname(os.path.abspath(__file__))
 
 ui_path = os.path.join(current_dir, "Start_menu.ui")
 
-import shared_variables
+import shared_variables as shared_variables
 from model.generate_random_palette import generate_color_palette
 
 
@@ -90,7 +90,7 @@ class PaletteSizeDialog(QDialog):
 
         self.button3 = QPushButton("3 Colors")
         self.button6 = QPushButton("6 Colors")
-        self.button10 = QPushButton("10 Colors")
+        self.button10 = QPushButton("9 Colors")
 
         layout.addWidget(self.button3)
         layout.addWidget(self.button6)
@@ -101,7 +101,7 @@ class PaletteSizeDialog(QDialog):
 
         self.button3.clicked.connect(self.set_palette_size_3)
         self.button6.clicked.connect(self.set_palette_size_6)
-        self.button10.clicked.connect(self.set_palette_size_10)
+        self.button10.clicked.connect(self.set_palette_size_9)
 
     def set_palette_size_3(self):
         shared_variables.palette_size = 3
@@ -113,8 +113,8 @@ class PaletteSizeDialog(QDialog):
         shared_variables.palette_size_selected = True
         self.accept()
 
-    def set_palette_size_10(self):
-        shared_variables.palette_size = 10
+    def set_palette_size_9(self):
+        shared_variables.palette_size = 9
         shared_variables.palette_size_selected = True
         self.accept()
 
