@@ -6,20 +6,21 @@
 import os
 import sys
 import resources_rc
-from PyQt5.QtWidgets import QApplication, QMainWindow, QPushButton, QVBoxLayout, QWidget, QLabel, QGraphicsScene, QGraphicsRectItem, QFileDialog
-from PyQt5.QtGui import QPixmap, QPalette, QBrush, QColor
+from PyQt5.QtWidgets import QApplication, QMainWindow, QLabel, QGraphicsScene, QGraphicsRectItem, QFileDialog
+from PyQt5.QtGui import QPixmap, QBrush, QColor
 from PyQt5.uic import loadUi
 from PyQt5.QtCore import Qt, QTimer
 from PIL import Image
-from sklearn.cluster import KMeans
+import colorgram
 import numpy as np
+import logging
 
 
 current_dir = os.path.dirname(os.path.abspath(__file__))
 
 ui_path = os.path.join(current_dir, "Image_palette_display.ui")
 
-import shared_variables
+import shared_variables as shared_variables
 
 from model.generate_random_palette import generate_color_palette
 
@@ -37,6 +38,7 @@ class ImagePaletteDisplay(QMainWindow):
         self.background_label.setScaledContents(True)
         self.background_label.setGeometry(self.rect())
         self.background_label.lower() 
+        self.palette = np.array([])
 
         
 
@@ -61,7 +63,10 @@ class ImagePaletteDisplay(QMainWindow):
 
 
     def update_palette_display(self):   
-        self.palette = self.generate_palette_from_image(shared_variables.image_path, shared_variables.palette_size)
+        if os.path.isfile(shared_variables.image_path):
+            self.palette = self.generate_palette_from_image(shared_variables.image_path, shared_variables.palette_size)
+        else:
+            self.push_GoBackButton()
     # Create a new QGraphicsScene
         scene = QGraphicsScene()
 
@@ -71,13 +76,20 @@ class ImagePaletteDisplay(QMainWindow):
         scene.setSceneRect(0, 0, width, height)
 
     # Calculate item width based on the number of colors
-        item_width = width / len(self.palette)
+        if not self.palette:
+            self.push_GoBackButton()
 
-        for i, color in enumerate(self.palette):
-            r, g, b = color
-            rect_item = QGraphicsRectItem(i * item_width, 0, item_width, height)
-            rect_item.setBrush(QBrush(QColor(r, g, b)))
-            scene.addItem(rect_item)
+        else:
+            item_width = width / len(self.palette)
+
+        if not self.palette:
+            self.push_GoBackButton()
+        else:
+            for i, color in enumerate(self.palette):
+                r, g, b = color
+                rect_item = QGraphicsRectItem(i * item_width, 0, item_width, height)
+                rect_item.setBrush(QBrush(QColor(r, g, b)))
+                scene.addItem(rect_item)
 
     # Set the scene to the QGraphicsView
         self.palette_display.setScene(scene)
@@ -90,28 +102,15 @@ class ImagePaletteDisplay(QMainWindow):
         shared_variables.palette_size_selected = False
         self.controller.show_start_menu()
 
-    def push_ReselectButton(self):
-        self.palette = self.generate_palette_from_image(shared_variables.image_path, shared_variables.palette_size)
-        self.update_palette_display()
-    
+    logging.basicConfig(filename='app.log', level=logging.DEBUG)
 
-    def generate_palette_from_image(self, image_path, num_colors):
-        img = Image.open(image_path)
-        img = img.convert('RGB')
-        img = img.resize((img.width // 10, img.height // 10))
-        img_array = np.array(img)
-        pixels = img_array.reshape(-1, 3)
-        kmeans = KMeans(n_clusters=num_colors).fit(pixels)
-        colors = kmeans.cluster_centers_
-
-    # Scale colors from 0-1 range to 0-255 range
-        colors = np.clip(colors, 0, 255)
-        colors = colors.astype(int)
-        return colors
+    def generate_palette_from_image(self, image_path, n_colors):
+        colors = colorgram.extract(image_path, n_colors)
+        palette = [color.rgb for color in colors]
+        return palette
 
 
     def select_image(self):
-
         if shared_variables.palette_size_selected:
         # Create a QFileDialog to let the user select an image file
             options = QFileDialog.Options()
@@ -122,9 +121,13 @@ class ImagePaletteDisplay(QMainWindow):
             "Image Files (*.jpg *.jpeg *.png *.gif);;All Files (*)",
             options=options
         )
-
-            image_path = file_path
-            self.push_ReselectButton()
+        if file_path and os.path.isfile(file_path):
+            shared_variables.image_path = file_path
+            self.update_palette_display()
+        else:
+            # User canceled the dialog or didn't select a file
+            shared_variables.image_path = ""
+            self.push_GoBackButton()
 
 
 
