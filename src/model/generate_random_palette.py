@@ -1,7 +1,6 @@
 #!/usr/bin/env python3
 
-import seaborn as sns
-import matplotlib.pyplot as plt
+
 import numpy as np
 import colorsys
 
