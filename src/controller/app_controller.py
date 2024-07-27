@@ -5,6 +5,7 @@ from PyQt5.QtWidgets import QApplication, QMainWindow, QStackedWidget, QSizePoli
 from view.start_menu import StartMenu
 from view.palette_display_menu import RandomPaletteDisplay
 from view.image_palette_display_menu import ImagePaletteDisplay
+from view.selected_color_palette_display import SelectedPaletteDisplay
 
 
 class AppController:
@@ -17,10 +18,12 @@ class AppController:
         self.start_menu = StartMenu(self)
         self.random_palette_display = RandomPaletteDisplay(self)
         self.image_palette_display = ImagePaletteDisplay(self)
+        self.color_coded_palette_display =SelectedPaletteDisplay(self)
 
         self.stacked_widget.addWidget(self.start_menu)
         self.stacked_widget.addWidget(self.random_palette_display)
         self.stacked_widget.addWidget(self.image_palette_display)
+        self.stacked_widget.addWidget(self.color_coded_palette_display)
 
         # Set initial size for the main window
         self.window.resize(800, 700)  # Adjust size as needed
@@ -38,6 +41,9 @@ class AppController:
 
     def show_image_palette_display(self):
         self.stacked_widget.setCurrentWidget(self.image_palette_display)
+
+    def show_color_coded_palette_display(self):
+        self.stacked_widget.setCurrentWidget(self.color_coded_palette_display)
 
     def run(self):
         self.window.show()
