@@ -5,15 +5,18 @@ import colorsys
 import random
 
 def generate_complementary_palette(initial_color, num_colors):
+    # Randomly set the variation between 0 and 1
+    variation = random.uniform(0, 1)
+    
     # Convert the initial color from RGB to HSV
     r, g, b = initial_color
     h, s, v = colorsys.rgb_to_hsv(r, g, b)
 
-    palette = []
+    palette = [initial_color]
 
     # Generate shades and tints of the initial color with some random variation
-    for i in range(num_colors // 2):
-        factor = i / (num_colors // 2)
+    for i in range((num_colors - 1) // 2):  # Adjust to account for the initial color
+        factor = i / ((num_colors - 1) // 2)
         new_s = min(max(s * (0.5 + factor * 0.5) + random.uniform(-0.1, 0.1), 0), 1)
         new_v = min(max(v * (0.5 + factor * 0.5) + random.uniform(-0.1, 0.1), 0), 1)
         new_h = (h + random.uniform(-0.05, 0.05)) % 1.0
@@ -24,12 +27,17 @@ def generate_complementary_palette(initial_color, num_colors):
     complementary_hue = (h + 0.5 + random.uniform(-0.05, 0.05)) % 1.0
 
     # Generate shades and tints of the complementary color with some random variation
-    for i in range((num_colors + 1) // 2):  # Ensure we generate enough colors
-        factor = i / ((num_colors + 1) // 2)
+    for i in range((num_colors + 1 - 1) // 2):  # Ensure we generate enough colors
+        factor = i / ((num_colors + 1 - 1) // 2)
         new_s = min(max(s * (0.5 + factor * 0.5) + random.uniform(-0.1, 0.1), 0), 1)
         new_v = min(max(v * (0.5 + factor * 0.5) + random.uniform(-0.1, 0.1), 0), 1)
         new_h = (complementary_hue + random.uniform(-0.05, 0.05)) % 1.0
         new_r, new_g, new_b = colorsys.hsv_to_rgb(new_h, new_s, new_v)
         palette.append((new_r, new_g, new_b))
 
+    # Introduce random variation to the palette
+    if random.random() < variation:
+        palette = palette[:1] + sorted(palette[1:], key=lambda x: random.random())
+    
     return palette[:num_colors]
+
