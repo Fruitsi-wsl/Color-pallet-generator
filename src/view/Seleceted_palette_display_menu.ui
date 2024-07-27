@@ -20,7 +20,7 @@
    </sizepolicy>
   </property>
   <property name="windowTitle">
-   <string>COLOR PALATTE GENERATOR</string>
+   <string>COLOR PALETTE GENERATOR</string>
   </property>
   <property name="toolTipDuration">
    <number>1</number>
@@ -72,7 +72,7 @@ color: yellow</string>
        <enum>QFrame::Plain</enum>
       </property>
       <property name="text">
-       <string>WELCOME TO THE COLOR PALATTE GENERATOR!</string>
+       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;WOW LOOK AT THAT !&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
       </property>
       <property name="textFormat">
        <enum>Qt::AutoText</enum>
@@ -115,7 +115,7 @@ color: yellow</string>
        <number>0</number>
       </property>
       <property name="text">
-       <string>If you want to generate a random palatte, just click the button below</string>
+       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Below is your generated palette:&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
       </property>
       <property name="alignment">
        <set>Qt::AlignHCenter|Qt::AlignTop</set>
@@ -137,54 +137,49 @@ color: yellow</string>
        <number>19</number>
       </property>
       <item row="0" column="0">
-       <widget class="QPushButton" name="random_palette_button">
-        <property name="minimumSize">
-         <size>
-          <width>150</width>
-          <height>50</height>
-         </size>
+       <layout class="QGridLayout" name="gridLayout_8">
+        <property name="leftMargin">
+         <number>150</number>
         </property>
-        <property name="maximumSize">
-         <size>
-          <width>150</width>
-          <height>50</height>
-         </size>
+       </layout>
+      </item>
+      <item row="0" column="2">
+       <layout class="QGridLayout" name="gridLayout_9">
+        <property name="rightMargin">
+         <number>150</number>
         </property>
-        <property name="styleSheet">
-         <string notr="true">background: pink;
-color: blue
-
-</string>
+       </layout>
+      </item>
+      <item row="0" column="1">
+       <widget class="QGraphicsView" name="palette_display">
+        <property name="frameShape">
+         <enum>QFrame::Box</enum>
         </property>
-        <property name="text">
-         <string>Generate</string>
+        <property name="frameShadow">
+         <enum>QFrame::Plain</enum>
         </property>
        </widget>
       </item>
-     </layout>
-    </item>
-    <item>
-     <layout class="QGridLayout" name="gridLayout_2">
-      <property name="bottomMargin">
-       <number>100</number>
-      </property>
-      <item row="3" column="0">
-       <layout class="QGridLayout" name="gridLayout_5"/>
-      </item>
-      <item row="2" column="0">
-       <layout class="QGridLayout" name="gridLayout_4">
-        <item row="0" column="0">
-         <widget class="QPushButton" name="image_palette_button">
+      <item row="2" column="1">
+       <layout class="QGridLayout" name="gridLayout_10">
+        <property name="topMargin">
+         <number>100</number>
+        </property>
+        <property name="bottomMargin">
+         <number>80</number>
+        </property>
+        <item row="3" column="0">
+         <widget class="QPushButton" name="GoBackButton">
           <property name="minimumSize">
            <size>
-            <width>0</width>
+            <width>150</width>
             <height>50</height>
            </size>
           </property>
           <property name="maximumSize">
            <size>
             <width>150</width>
-            <height>50</height>
+            <height>16777215</height>
            </size>
           </property>
           <property name="styleSheet">
@@ -192,76 +187,41 @@ color: blue
 color: blue</string>
           </property>
           <property name="text">
-           <string>Select Image</string>
+           <string>Back</string>
           </property>
          </widget>
         </item>
-       </layout>
-      </item>
-      <item row="1" column="0">
-       <widget class="QLabel" name="label_2">
-        <property name="font">
-         <font>
-          <family>Ubuntu</family>
-          <pointsize>14</pointsize>
-          <italic>false</italic>
-         </font>
-        </property>
-        <property name="styleSheet">
-         <string notr="true">color: yellow
-</string>
-        </property>
-        <property name="text">
-         <string>Or if you want to generate a palatte from an image click the button below here:</string>
-        </property>
-        <property name="alignment">
-         <set>Qt::AlignHCenter|Qt::AlignTop</set>
-        </property>
-       </widget>
-      </item>
-     </layout>
-    </item>
-    <item>
-     <widget class="QLabel" name="label_3">
-      <property name="font">
-       <font>
-        <family>Ubuntu</family>
-        <pointsize>14</pointsize>
-       </font>
-      </property>
-      <property name="styleSheet">
-       <string notr="true">color: yellow
-</string>
-      </property>
-      <property name="text">
-       <string>Or if you want to generate a palette from a specific color click the button below here:</string>
-      </property>
-      <property name="alignment">
-       <set>Qt::AlignCenter</set>
-      </property>
-     </widget>
-    </item>
-    <item>
-     <layout class="QGridLayout" name="gridLayout">
-      <property name="bottomMargin">
-       <number>0</number>
-      </property>
-      <item row="1" column="0">
-       <widget class="QPushButton" name="select_color_button">
-        <property name="maximumSize">
-         <size>
-          <width>150</width>
-          <height>50</height>
-         </size>
-        </property>
-        <property name="styleSheet">
-         <string notr="true">background: pink;
+        <item row="1" column="0">
+         <widget class="QPushButton" name="Regenerate_Button">
+          <property name="minimumSize">
+           <size>
+            <width>100</width>
+            <height>50</height>
+           </size>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>200</width>
+            <height>200</height>
+           </size>
+          </property>
+          <property name="styleSheet">
+           <string notr="true">background: pink;
 color: blue</string>
-        </property>
-        <property name="text">
-         <string>Select Color</string>
-        </property>
-       </widget>
+          </property>
+          <property name="text">
+           <string>Regenerate</string>
+          </property>
+         </widget>
+        </item>
+        <item row="2" column="0">
+         <layout class="QGridLayout" name="gridLayout">
+          <property name="topMargin">
+           <number>20</number>
+          </property>
+         </layout>
+        </item>
+       </layout>
       </item>
      </layout>
     </item>

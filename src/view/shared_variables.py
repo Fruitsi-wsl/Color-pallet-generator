@@ -5,3 +5,5 @@ palette_size = 0
 image_path = ""
 
 palette_size_selected = False
+
+selected_color = []

@@ -3,8 +3,9 @@
 import sys
 import os
 import resources_rc
-from PyQt5.QtWidgets import QApplication, QMainWindow, QPushButton, QVBoxLayout, QLabel, QDialog, QFileDialog
+from PyQt5.QtWidgets import QApplication, QMainWindow, QPushButton, QVBoxLayout, QLabel, QDialog, QFileDialog, QColorDialog, QSlider
 from PyQt5.QtGui import QPixmap
+from PyQt5.QtCore import Qt
 from PyQt5.uic import loadUi
 
 
@@ -16,6 +17,7 @@ current_dir = os.path.dirname(os.path.abspath(__file__))
 ui_path = os.path.join(current_dir, "Start_menu.ui")
 
 import shared_variables as shared_variables
+from model.generate_color_coded_palette import generate_complementary_palette
 from model.generate_random_palette import generate_color_palette
 
 
@@ -36,6 +38,7 @@ class StartMenu(QMainWindow):
 
         self.random_palette_button.clicked.connect(lambda: (self.prompt_palette_size(), self.random_palette_button_clicked(), self.set_palette_size() ))
         self.image_palette_button.clicked.connect(lambda: (self.prompt_palette_size(), self.select_image()))
+        self.select_color_button.clicked.connect(lambda: (self.prompt_palette_size(), self.prompt_color_selection(), self.color_coded_palette_button_clicked(), self.create_color_coded_palette()))
 
     def resizeEvent(self, event):
         super().resizeEvent(event)
@@ -48,13 +51,21 @@ class StartMenu(QMainWindow):
     def image_palette_button_clicked(self):
         self.controller.show_image_palette_display()
 
+    def color_coded_palette_button_clicked(self):
+        self.controller.show_color_coded_palette_display()
+
     def set_palette_size(self):
         self.palette = generate_color_palette(shared_variables.palette_size)
+
+    def create_color_coded_palette(self):
+        self.palette = generate_complementary_palette(shared_variables.selected_color, shared_variables.palette_size)
         
 
     def prompt_palette_size(self):
         dialog = PaletteSizeDialog(self)
         dialog.exec_()
+
+    
 
     def select_image(self):
 
@@ -71,6 +82,17 @@ class StartMenu(QMainWindow):
 
             shared_variables.image_path = file_path
             self.image_palette_button_clicked()
+
+
+
+    def prompt_color_selection(self):
+        color = QColorDialog.getColor()
+        if color.isValid():
+            # Convert QColor to RGB tuple
+            shared_variables.selected_color = (color.red() / 255.0, color.green() / 255.0, color.blue() / 255.0)
+    
+            
+
         
 
 
@@ -88,35 +110,32 @@ class PaletteSizeDialog(QDialog):
         label = QLabel("Please select the number of colors for the palette:")
         layout.addWidget(label)
 
-        self.button3 = QPushButton("3 Colors")
-        self.button6 = QPushButton("6 Colors")
-        self.button10 = QPushButton("9 Colors")
+        self.slider = QSlider(Qt.Horizontal)
+        self.slider.setRange(3, 10)
+        self.slider.setValue(6)  # Default value
+        self.slider.setTickInterval(1)
+        self.slider.setTickPosition(QSlider.TicksBelow)
+        layout.addWidget(self.slider)
 
-        layout.addWidget(self.button3)
-        layout.addWidget(self.button6)
-        layout.addWidget(self.button10)
+        self.value_label = QLabel("6")
+        self.slider.valueChanged.connect(self.update_value_label)
+        layout.addWidget(self.value_label)
+
+        self.ok_button = QPushButton("OK")
+        self.ok_button.clicked.connect(self.set_palette_size)
+        layout.addWidget(self.ok_button)
 
         self.setLayout(layout)
 
+    def update_value_label(self, value):
+        self.value_label.setText(str(value))
 
-        self.button3.clicked.connect(self.set_palette_size_3)
-        self.button6.clicked.connect(self.set_palette_size_6)
-        self.button10.clicked.connect(self.set_palette_size_9)
-
-    def set_palette_size_3(self):
-        shared_variables.palette_size = 3
+    def set_palette_size(self):
+        shared_variables.palette_size = self.slider.value()
         shared_variables.palette_size_selected = True
         self.accept()
 
-    def set_palette_size_6(self):
-        shared_variables.palette_size = 6
-        shared_variables.palette_size_selected = True
-        self.accept()
 
-    def set_palette_size_9(self):
-        shared_variables.palette_size = 9
-        shared_variables.palette_size_selected = True
-        self.accept()
 
         
 
