@@ -18,7 +18,6 @@ ui_path = os.path.join(current_dir, "Start_menu.ui")
 
 import shared_variables as shared_variables
 from model.generate_color_coded_palette import generate_complementary_palette
-from model.generate_random_palette import generate_color_palette
 
 
 
@@ -36,7 +35,7 @@ class StartMenu(QMainWindow):
 
         
 
-        self.random_palette_button.clicked.connect(lambda: (self.prompt_palette_size(), self.random_palette_button_clicked(), self.set_palette_size() ))
+        self.random_palette_button.clicked.connect(lambda: (self.prompt_palette_size(), self.random_palette_button_clicked() ))
         self.image_palette_button.clicked.connect(lambda: (self.prompt_palette_size(), self.select_image()))
         self.select_color_button.clicked.connect(lambda: (self.prompt_palette_size(), self.prompt_color_selection(), self.color_coded_palette_button_clicked(), self.create_color_coded_palette()))
 
@@ -46,19 +45,20 @@ class StartMenu(QMainWindow):
         self.background_label.resize(self.size())
 
     def random_palette_button_clicked(self):
-        self.controller.show_random_palette_display()
+        if shared_variables.palette_size_selected:
+            self.controller.show_random_palette_display()
 
     def image_palette_button_clicked(self):
         self.controller.show_image_palette_display()
 
     def color_coded_palette_button_clicked(self):
-        self.controller.show_color_coded_palette_display()
+        if shared_variables.selected_color != []:
+            self.controller.show_color_coded_palette_display()
 
-    def set_palette_size(self):
-        self.palette = generate_color_palette(shared_variables.palette_size)
 
     def create_color_coded_palette(self):
-        self.palette = generate_complementary_palette(shared_variables.selected_color, shared_variables.palette_size)
+        if shared_variables.selected_color != []:
+            self.palette = generate_complementary_palette(shared_variables.selected_color, shared_variables.palette_size)
         
 
     def prompt_palette_size(self):
@@ -86,10 +86,11 @@ class StartMenu(QMainWindow):
 
 
     def prompt_color_selection(self):
-        color = QColorDialog.getColor()
-        if color.isValid():
+        if shared_variables.palette_size_selected:
+            color = QColorDialog.getColor()
+            if color.isValid():
             # Convert QColor to RGB tuple
-            shared_variables.selected_color = (color.red() / 255.0, color.green() / 255.0, color.blue() / 255.0)
+                shared_variables.selected_color = (color.red() / 255.0, color.green() / 255.0, color.blue() / 255.0)
     
             
 

@@ -72,7 +72,7 @@ color: yellow</string>
        <enum>QFrame::Plain</enum>
       </property>
       <property name="text">
-       <string>WELCOME TO THE COLOR PALATTE GENERATOR!</string>
+       <string>WELCOME TO THE COLOR PALETTE GENERATOR!</string>
       </property>
       <property name="textFormat">
        <enum>Qt::AutoText</enum>
@@ -115,7 +115,7 @@ color: yellow</string>
        <number>0</number>
       </property>
       <property name="text">
-       <string>If you want to generate a random palatte, just click the button below</string>
+       <string>If you want to generate a random palette, just click the button below</string>
       </property>
       <property name="alignment">
        <set>Qt::AlignHCenter|Qt::AlignTop</set>
@@ -212,7 +212,7 @@ color: blue</string>
 </string>
         </property>
         <property name="text">
-         <string>Or if you want to generate a palatte from an image click the button below here:</string>
+         <string>Or if you want to generate a palette from an image click the button below here:</string>
         </property>
         <property name="alignment">
          <set>Qt::AlignHCenter|Qt::AlignTop</set>
