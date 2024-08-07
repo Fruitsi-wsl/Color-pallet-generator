@@ -19,8 +19,13 @@ cd Color-pallet-generator
 
 ## 3.Install Dependancies:
 
-make sure you have pip installed, then run:
 
+make sure you have pip installed, then run:
+You will need to install colorgram seperately from the repo:
+```
+pip install git+https://github.com/obskyr/colorgram.py.git
+```
+Then run the code below to install all other requirements:
 ```
 pip install -r requirements.txt
 ```
