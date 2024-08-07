@@ -20,7 +20,7 @@ cd Color-pallet-generator
 ## 3.Install Dependancies:
 
 
-make sure you have pip installed, then run:
+Make sure you have pip installed.
 
 You will need to install colorgram seperately from the repo:
 ```
