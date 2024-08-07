@@ -1,5 +1,5 @@
 # Color-pallet-generator
-A program that either takes an image and generates a color palate from it or generates a random color pallate
+A program that either takes an image and generates a color palate from it or generates a random color pallate. It also has the feature for you to choose a color and it will create complimentary color palletes from your chosen color!
 
 # Installation
 
