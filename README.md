@@ -8,7 +8,7 @@ To get started with the App, follow the steps below:
 ## 1.Clone the repository:
 
 ```
-git clone https://github.com/Fruitsi-wsl/Currency-Converter.git
+git clone https://github.com/Fruitsi-wsl/Color-pallet-generator.git
 ```
 
 ## 2.Navigate to Project Directory:
