@@ -21,6 +21,7 @@ cd Color-pallet-generator
 
 
 make sure you have pip installed, then run:
+
 You will need to install colorgram seperately from the repo:
 ```
 pip install git+https://github.com/obskyr/colorgram.py.git
